@@ -30,7 +30,7 @@ Here, we read data in using the `read_csv()` function. The *path* to the file is
 We *assign* the data in this CSV to the *variable* `survey`. This way we can refer back to this object by its variable name throughout our analysis.
 
 ```{r data, warning = FALSE, message = FALSE}
-survey <- read_csv('../data/python_tutorial.csv', skip = 1)
+survey <- read_csv('https://raw.githubusercontent.com/ShanEllis/bootcamp/master/data/python_tutorial.csv', skip = 1)
 ```
 
 ## Data Summary

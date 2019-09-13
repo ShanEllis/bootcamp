@@ -1647,7 +1647,7 @@ div.tocify {
 <h1><span class="header-section-number">1</span> Data</h1>
 <p>Here, we read data in using the <code>read_csv()</code> function. The <em>path</em> to the file is specified within the function call, along with the argument <code>skip = 1</code> to specify that we want R to ignore the first row of the CSV when it reads the data in.</p>
 <p>We <em>assign</em> the data in this CSV to the <em>variable</em> <code>survey</code>. This way we can refer back to this object by its variable name throughout our analysis.</p>
-<pre class="r"><code>survey &lt;- read_csv('../data/python_tutorial.csv', skip = 1)</code></pre>
+<pre class="r"><code>survey &lt;- read_csv('https://raw.githubusercontent.com/ShanEllis/bootcamp/master/data/python_tutorial.csv', skip = 1)</code></pre>
 <div id="data-summary" class="section level2">
 <h2><span class="header-section-number">1.1</span> Data Summary</h2>
 <p>We can also use the <code>skim()</code> function from the <code>skimr</code> package to get a summary of all the column information in our dataset. This function breaks the summary down by variable <em>type</em>. Numeric data and string data are <em>not</em> treated the same.</p>
