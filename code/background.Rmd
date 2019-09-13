@@ -1,0 +1,109 @@
+---
+title: "Background Knowledge"
+author: "Shannon Ellis"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: cosmo
+    code_folding: hide
+    number_sections: yes
+    toc: yes
+    toc_float: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+## install packages if not already installed
+list.of.packages <- c("tidyverse", "skimr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+# load packages
+library(tidyverse)
+library(skimr)
+```
+
+# Data
+
+Here, we read data in using the `read_csv()` function. The *path* to the file is specified within the function call, along with the argument `skip = 1` to specify that we want R to ignore the first row of the CSV when it reads the data in.
+
+We *assign* the data in this CSV to the *variable* `survey`. This way we can refer back to this object by its variable name throughout our analysis.
+
+```{r data, warning = FALSE, message = FALSE}
+survey <- read_csv('../data/python_tutorial.csv', skip = 1)
+```
+
+## Data Summary
+
+We can also use the `skim()` function from the `skimr` package to get a summary of all the column information in our dataset. This function breaks the summary down by variable *type*. Numeric data and string data are *not* treated the same.
+
+```{r, results = "asis"}
+skim(survey) %>% skimr::kable()
+```
+
+# Results 
+
+## Background in Programming
+
+To get a summary of the information stored in this dataset, we can generate a few plots. We'll use the `ggplot2` package to do so.
+
+```{r programming-background}
+# specify levels for responses
+levels <- c("I've never written any code", 
+            "I have limited programming experience.", 
+            "I am a competent programmer.",
+            "I'm a strong programmer.",
+            "I could be hired as a software engineer.")
+
+## generate plot
+ggplot(survey, aes(x = fct_relevel(`Which of the following best describes you?`, 
+                                   levels))) + 
+  geom_bar() + 
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  labs(x = "Which of the following best describes you?",
+       y = "Number of Respondents") +
+  theme_classic(base_size = 16)
+```
+
+We see in this output that most students have some programming experience, but we have a diversity in responses, which is the cogsci way - lots of different and unique backgrounds! 
+
+## Age At First Code
+
+We'll use a similar approach here to plot a histogram of how old you were when you first learned to code.
+
+```{r warning = FALSE}
+ggplot(survey, aes(x = `At what age did you first learn to code?`)) + 
+  geom_histogram(binwidth = 5) + 
+  labs(y = "Number of Respondents") +
+  theme_classic(base_size = 16)
+```
+
+## Programming Language
+
+Here, it's a little bit more work to plot the information we want. People can be comfortable (and often are) programming in more than one language, so we have to parse the responses. We do this below by defining a function and then applying that across the languages for which we want to count responses. These results are then plotted.
+
+```{r}
+# function to count responses
+count_responses <- function(x){
+  sum(grepl(x, survey$`In which programming language(s) are you comfortable? Select all that apply. - Selected Choice`))
+}
+
+# specify possible responses 
+# ignoring other for now
+list_languages <- list("Python" = "Python", "R" = "R", "JavaScript" = "JavaScript", "C/C++" = "C/C\\+\\+", "Java" = "Java", "Matlab" = "Matlab")
+
+# map function to languages specified
+# and rehape the data
+language_responses <- map_df(list_languages, count_responses)  %>% 
+  gather() %>% 
+  mutate(value = ifelse(key == "Java", (value - 2), value)) # hack it out to not double count JavaScript
+
+
+# plot the results
+ggplot(language_responses, aes(key, value)) + 
+  geom_bar(stat = "identity")+
+  labs(x = "Which programming languages are you comfortable in?",
+       y = "Number of Respondents") +
+  theme_classic(base_size = 16)
+```
+
