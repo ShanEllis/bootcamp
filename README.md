@@ -1,6 +1,12 @@
 # Python Tutorial
 
 Materials used for Python Tutorial for first year COGSCI grad student bootcamp
+
+ ### 2021
+- [Slides](https://docs.google.com/presentation/d/1F4YAuSCaN6N67iYazJdw36YJ7QyJQUvgpM0HXAMSUe0/edit?usp=sharing) from tutorial
+- [Colaboratory Python Tutorial](http://bit.ly/cogs_python)
+- [Colaboratory Python Tutorial: Answers](https://colab.research.google.com/drive/19cdSOSQ16mokqBybHPg-J787tabaj1gB?usp=sharing)
+
  
  ### 2020
 - [Slides](https://docs.google.com/presentation/d/1USkJIPSeOwrsnMxd6yd-h2HXxnMW0TlylTbNRkVFPR0/edit?usp=sharing) from tutorial
